@@ -1,66 +1,58 @@
-/* print.css - rules for printing/exporting PDF */
+/* print.css - Minimal professionnel pour export PDF */
 
-/* Reset margins to avoid blank pages caused by default browsers margins */
-html, body {
-  margin: 0 !important;
-  padding: 0 !important;
-  height: auto !important;
-  background: white !important;
+/* Reset et page margins */
+@page { margin: 10mm; }
+html, body { margin: 0; padding: 0; background: #f6f6f6; }
+
+/* Variables */
+:root{
+  --bg: #ffffff;
+  --text: #111;
+  --muted: #666;
+  --accent: #0a6fbf;
+  --base-font: "Roboto", Arial, sans-serif;
 }
 
-/* Define page margins explicitly */
-@page {
-  margin: 10mm; /* reduces likelihood of blank pages */
-}
-
-/* Printable container should use full printable width and neutral margins */
-#printable {
+/* Conteneur printable (A4 friendly) */
+#printable{
   box-sizing: border-box;
-  margin: 0 auto;
-  width: auto; /* allow width set by inline style from JS or adapt to page */
-  max-width: 210mm;
-  background: white;
-}
-
-/* Hide interactive or fixed UI elements when printing */
-.controls,
-.fixed,
-.no-print,
-button,
-#scrollTopBtn,
-#download-pdf,
-#bg-music,
-#cookie-consent,
-audio, video, canvas {
-  display: none !important;
-}
-
-/* Ensure header and small blocks stay together and don't create an extra blank page */
-header,
-footer,
-.details,
-.summary,
-.section,
-.article,
-h1, h2, h3 {
-  page-break-after: avoid;
+  max-width: 190mm;
+  margin: 10mm auto;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--base-font);
+  font-size: 12pt;
+  line-height: 1.35;
+  padding: 12mm;
+  border-radius: 6px;
   page-break-inside: avoid;
-  break-inside: avoid-column;
 }
 
-/* Force .details to behave as printable block and avoid breaking inside small blocks */
-.details {
-  display: block !important;
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
+/* Head */
+header { margin-bottom: 6mm; }
+header .futuristic { font-family: "Orbitron", var(--base-font); font-weight:700; font-size:20pt; margin:0 0 6px 0; }
+header .tag { color: var(--muted); font-size: 10pt; margin-right:8px; }
+
+/* Sections */
+section { margin-bottom: 6mm; }
+section h2 { font-size:13pt; color: var(--accent); border-bottom:1px solid #e6e6e6; padding-bottom:4px; margin:0 0 6px 0; }
+
+/* Ensure details visible in PDF */
+.details { display: block !important; }
+
+/* --- Hide interactive / UI elements only for print --- */
+@media print {
+  audio, .navbar, .nav-btn, .arrow-toggle, #download-pdf, #hidden-page, #scrollTopBtn, #bg-music {
+    display: none !important;
+  }
 }
 
-/* Avoid orphan/legend causing extra pages */
-* {
-  -webkit-print-color-adjust: exact !important;
+/* Avoid page breaks inside small blocks */
+header, .timeline-item, section, .personal-info, .details {
+  page-break-inside: avoid;
 }
 
-/* Prevent forcing blank pages by elements with fixed positioning */
-[style*="position:fixed"] {
-  position: static !important;
+/* Small screens */
+@media screen and (max-width: 800px) {
+  #printable { width: calc(100% - 32px); margin: 16px; padding: 12px; border-radius: 6px; }
 }
