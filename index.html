@@ -6,6 +6,7 @@
     <title>CV - Gaël CHARLIN</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="print.css" media="print,screen">
 </head>
 <body>
     <nav class="navbar">
@@ -19,6 +20,10 @@
         <div class="tag">Rigoureux</div>
         <div class="tag">Passionné</div>
     </header>
+
+    <!-- Printable wrapper starts -->
+    <div id="printable" class="printable">
+
     <section class="personal-info" id="personal-info">
         <div><span class="label">Adresse :</span> 6, rue de la Potale, 21150 Les Granges sous Grignon</div>
         <div><span class="label">Téléphone :</span> 06 23 99 49 75</div>
@@ -53,7 +58,7 @@
         <h2>Parcours</h2>
         <div class="timeline">
             <div class="timeline-item">
-                 <strong>decembre 2026 :</strong> Stage de 2 jour d'imersion dans l'entreprise de kroes feuilletage
+                 <strong>décembre 2026 :</strong> Stage de 2 jours d'immersion dans l'entreprise de Kroes Feuilletage
                 <strong>Mai 2025 :</strong> Obtention de mon CAP cuisine avec la mention Bien
             </div>
             <div class="timeline-item">
@@ -90,7 +95,7 @@
             </div>
             <div class="timeline-item">
                 <strong>Stage découverte :</strong>
-                <div><strong>decembre 2026 :</strong> Stage de 2 jour d'imersion dans l'entreprise de kroes feuilletage</div>
+                <div><strong>décembre 2026 :</strong> Stage de 2 jours d'immersion dans l'entreprise de Kroes Feuilletage</div>
                 <button class="arrow-toggle" onclick="toggleStage()" aria-label="Afficher plus"><span>▼</span></button>
                 <div id="stage-details" class="details" style="display:none;">
                     <p>Ces expériences m’ont permis de comprendre le fonctionnement d’un magasin, le travail en équipe, et l’importance de la rigueur dans les métiers de bouche. Mais c’est [...]</p>
@@ -112,14 +117,18 @@
         </ul>
     </section>
     <div style="text-align:center;margin:2em 0;">
-        <button id="download-txt" class="download-btn">Télécharger le CV en texte</button>
+        <button id="download-pdf" class="download-btn">Télécharger le CV en PDF</button>
     </div>
+
+    </div>
+    <!-- Printable wrapper ends -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <footer>
         &copy; 2025 Gaël CHARLIN — Site CV dynamique et futuriste
     </footer>
     <button id="scrollTopBtn" title="Remonter tout en haut">↑</button>
-    <audio id="bg-music" src="https://cdn.pixabay.com/audio/2023/03/16/audio_12b6b1b7b7.mp3" autoplay loop controls style="position:fixed;bottom:16px;left:16px;z-index:200;opacity:0.7;width:220px;back[...]
+    <audio id="bg-music" src="https://cdn.pixabay.com/audio/2023/03/16/audio_12b6b1b7b7.mp3" autoplay loop controls style="position:fixed;bottom:16px;left:16px;z-index:200;opacity:0.7;width:220px;back[...]">
         Votre navigateur ne supporte pas l'audio.
     </audio>
     <div id="hidden-page" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(44,83,100,0.98);color:#fff;z-index:9999;overflow:auto;padding:3vw 0;">
@@ -137,7 +146,7 @@
             <p>🤝 En parallèle, Gaël s’investit comme bénévole au Secours Populaire 🫶, ce qui témoigne de ses valeurs humaines et de son sens du collectif.</p>
             <h3 style="margin-top:2em;color:#ff00cc;text-align:center;">🎯 Objectif futur</h3>
             <p>Dans les années à venir, Gaël souhaite intégrer l’Armée de l’air en tant que cuisinier ✈️👨‍🍳. Ce projet lui permettrait de mettre ses compétences au service des au[...]
-            <button onclick="closeHiddenPage()" style="display:block;margin:2em auto 0 auto;padding:0.7em 2em;font-size:1.2em;background:#00eaff;color:#222;border:none;border-radius:16px;cursor:pointe[...]
+            <button onclick="closeHiddenPage()" style="display:block;margin:2em auto 0 auto;padding:0.7em 2em;font-size:1.2em;background:#00eaff;color:#222;border:none;border-radius:16px;cursor:pointe[...]>
         </div>
     </div>
     <section id="contact" style="max-width:700px;margin:2rem auto 2rem auto;background:rgba(44,83,100,0.7);border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.2);padding:2rem;">
