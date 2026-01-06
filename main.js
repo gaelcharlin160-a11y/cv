@@ -1,61 +1,70 @@
-// Fonction de génération PDF minimal / professionnel en utilisant html2pdf.js
-function generatePDF() {
-  const printable = document.getElementById('printable');
-  if (!printable) {
-    alert("Contenu imprimable introuvable — assurez-vous d'avoir ajouté l'élément #printable.");
-    return;
-  }
+// main.js - PDF generation and other interactions
 
-  // Clone pour éviter d'altérer la page visible (on nettoie le clone)
-  const clone = printable.cloneNode(true);
-
-  // Supprimer éléments indésirables dans le clone (sécurité)
-  const selectorsToRemove = ['audio', '.navbar', '.nav-btn', '.arrow-toggle', '#hidden-page', 'button.download-btn'];
-  selectorsToRemove.forEach(sel => {
-    clone.querySelectorAll(sel).forEach(n => n.remove());
-  });
-
-  // Créer un conteneur temporaire invisible dans le DOM pour le rendu
-  const wrapper = document.createElement('div');
-  wrapper.style.position = 'fixed';
-  wrapper.style.left = '-9999px';
-  wrapper.style.top = '0';
-  wrapper.id = 'pdf-temp-wrapper';
-  wrapper.appendChild(clone);
-  document.body.appendChild(wrapper);
-
-  // Options html2pdf (jsPDF)
-  const opt = {
-    margin: 10, // mm
-    filename: 'CV_Gael_CHARLIN.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: {
-      scale: 2, // meilleure résolution
-      useCORS: true,
-      allowTaint: false,
-      logging: false
-    },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  };
-
-  // Lancer html2pdf
-  html2pdf().set(opt).from(clone).save()
-    .then(() => {
-      // Nettoyage
-      document.body.removeChild(wrapper);
-    })
-    .catch(err => {
-      console.error('Erreur création PDF', err);
-      document.body.removeChild(wrapper);
-      alert('Erreur lors de la génération du PDF. Voir la console.');
-    });
-}
-
-// Attacher l'événement au bouton si présent
-document.addEventListener('DOMContentLoaded', function() {
-  const btn = document.getElementById('download-pdf');
-  if (btn) btn.addEventListener('click', function(e) {
-    e.preventDefault();
-    generatePDF();
-  });
+document.addEventListener('DOMContentLoaded', function () {
+  const downloadBtn = document.getElementById('download-pdf');
+  if (downloadBtn) downloadBtn.addEventListener('click', generatePDF);
 });
+
+async function generatePDF() {
+  const printable = document.getElementById('printable');
+  if (!printable) return console.error('Printable element not found');
+
+  try {
+    // Clone printable area so we can clean it up without touching the live page
+    const clone = printable.cloneNode(true);
+
+    // Ensure the clone has an explicit width to avoid layout shifts during html2pdf rendering
+    const computed = window.getComputedStyle(printable);
+    if (computed && computed.width) {
+      clone.style.boxSizing = 'border-box';
+      clone.style.width = computed.width; // maintain on-screen pixel width
+    }
+
+    // Remove elements that should not appear in the PDF
+    const removeSelectors = [
+      '.controls',
+      'button',
+      '.fixed',
+      '.no-print',
+      '#scrollTopBtn',
+      '#bg-music',
+      '#download-pdf',
+      '#cookie-consent',
+      'audio',
+      'video',
+      'canvas'
+    ];
+
+    removeSelectors.forEach(sel => {
+      const nodes = clone.querySelectorAll(sel);
+      nodes.forEach(n => n.remove());
+    });
+
+    // Create a temporary container for the clone
+    const container = document.createElement('div');
+    container.style.position = 'fixed';
+    container.style.left = '-9999px';
+    container.style.top = '0';
+    container.appendChild(clone);
+    document.body.appendChild(container);
+
+    // Use html2pdf (assumed to be available) to generate the PDF
+    // Keep flow and error handling similar to the original implementation
+    const opt = {
+      margin:       [10, 10, 10, 10], // mm
+      filename:     'Gael-Charlin-CV.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    // html2pdf returns a promise-like chain
+    await html2pdf().set(opt).from(clone).save();
+
+    // Cleanup
+    container.remove();
+  } catch (err) {
+    console.error('Error generating PDF:', err);
+    alert('An error occurred while generating the PDF. See console for details.');
+  }
+}

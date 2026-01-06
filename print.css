@@ -1,105 +1,66 @@
-/* Minimal — Professionnel : styles pour l'impression / PDF et rendu à l'écran */
-@media print, screen {
-  :root{
-    --bg: #ffffff;
-    --text: #111;
-    --muted: #666;
-    --accent: #0a6fbf; /* discret */
-    --max-width-mm: 190mm; /* A4 minus margins */
-    --base-font: "Roboto", Arial, sans-serif;
-  }
+/* print.css - rules for printing/exporting PDF */
 
-  /* Container pour l'export PDF */
-  #printable {
-    box-sizing: border-box;
-    width: var(--max-width-mm);
-    margin: 12mm auto;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--base-font);
-    font-size: 12pt;
-    line-height: 1.35;
-    padding: 12mm;
-    border-radius: 6px;
-  }
+/* Reset margins to avoid blank pages caused by default browsers margins */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: auto !important;
+  background: white !important;
+}
 
-  /* Head / Nom */
-  header, #printable header {
-    text-align: left;
-    margin-bottom: 6mm;
-  }
+/* Define page margins explicitly */
+@page {
+  margin: 10mm; /* reduces likelihood of blank pages */
+}
 
-  header .futuristic {
-    font-family: "Orbitron", var(--base-font);
-    font-weight: 700;
-    font-size: 20pt;
-    color: var(--text);
-    margin: 0 0 4px 0;
-    letter-spacing: 0.5px;
-  }
+/* Printable container should use full printable width and neutral margins */
+#printable {
+  box-sizing: border-box;
+  margin: 0 auto;
+  width: auto; /* allow width set by inline style from JS or adapt to page */
+  max-width: 210mm;
+  background: white;
+}
 
-  header .tag {
-    display: inline-block;
-    color: var(--muted);
-    font-size: 10pt;
-    margin-right: 8px;
-  }
+/* Hide interactive or fixed UI elements when printing */
+.controls,
+.fixed,
+.no-print,
+button,
+#scrollTopBtn,
+#download-pdf,
+#bg-music,
+#cookie-consent,
+audio, video, canvas {
+  display: none !important;
+}
 
-  /* Sections */
-  section {
-    margin-bottom: 6mm;
-  }
+/* Ensure header and small blocks stay together and don't create an extra blank page */
+header,
+footer,
+.details,
+.summary,
+.section,
+.article,
+h1, h2, h3 {
+  page-break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid-column;
+}
 
-  section h2 {
-    font-size: 13pt;
-    margin: 0 0 6px 0;
-    color: var(--accent);
-    border-bottom: 1px solid #e6e6e6;
-    padding-bottom: 4px;
-    text-transform: none;
-  }
+/* Force .details to behave as printable block and avoid breaking inside small blocks */
+.details {
+  display: block !important;
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+}
 
-  .label {
-    font-weight: 700;
-    color: var(--text);
-  }
+/* Avoid orphan/legend causing extra pages */
+* {
+  -webkit-print-color-adjust: exact !important;
+}
 
-  ul {
-    margin: 4px 0 0 1.2em;
-    padding: 0;
-  }
-
-  .timeline-item {
-    margin-bottom: 4px;
-  }
-
-  /* Make details visible in PDF (if you used display:none for details) */
-  .details { display: block !important; }
-
-  /* Footer */
-  footer {
-    font-size: 9pt;
-    color: var(--muted);
-    text-align: center;
-    margin-top: 6mm;
-  }
-
-  /* Remove / hide interactive and decorative elements from the PDF */
-  audio, .navbar, .nav-btn, .arrow-toggle, #hidden-page, #contact-form button[type="submit"] {
-    display: none !important;
-  }
-
-  /* Ensure links are visible and not underlined */
-  a { color: var(--accent); text-decoration: none; }
-
-  /* Page break rules (if long) */
-  .page-break { page-break-before: always; }
-
-  /* Improve printed image scaling if any */
-  img { max-width: 100%; height: auto; }
-
-  /* Small screens: scale container to fit */
-  @media screen and (max-width: 800px) {
-    #printable { width: calc(100% - 32px); margin: 16px; padding: 12px; border-radius: 6px; }
-  }
+/* Prevent forcing blank pages by elements with fixed positioning */
+[style*="position:fixed"] {
+  position: static !important;
 }
